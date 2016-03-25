@@ -34,6 +34,6 @@ windows:
       panes:
         - clear
         - clear
-        - vim notes
-        - vim todo
+        - vim todo.md
+        - vim notes.md
   - secondary:

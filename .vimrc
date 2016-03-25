@@ -28,6 +28,9 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'jmcantrell/vim-virtualenv'
 Plugin 'majutsushi/tagbar'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'klen/python-mode'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -50,9 +53,8 @@ set encoding=utf-8
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-let python_highlight_all=1
-syntax on
-
+syntax enable
+let python_highlight_all = 1
 
 let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 
@@ -98,3 +100,21 @@ nnoremap <silent> <C-Right> <c-w>l
 nnoremap <silent> <C-Left> <c-w>h
 nnoremap <silent> <C-Up> <c-w>k
 nnoremap <silent> <C-Down> <c-w>j
+
+hi Normal ctermbg=none
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+"enable strikeythroughs and such
+"" modify selected text using combining diacritics
+command! -range -nargs=0 Overline        call s:CombineSelection(<line1>, <line2>, '0305')
+command! -range -nargs=0 Underline       call s:CombineSelection(<line1>, <line2>, '0332')
+command! -range -nargs=0 DoubleUnderline call s:CombineSelection(<line1>, <line2>, '0333')
+command! -range -nargs=0 Strikethrough   call s:CombineSelection(<line1>, <line2>, '0336')
+
+function! s:CombineSelection(line1, line2, cp)
+	  execute 'let char = "\u'.a:cp.'"'
+	    execute a:line1.','.a:line2.'s/\%V[^[:cntrl:]]/&'.char.'/ge'
+    endfunction
