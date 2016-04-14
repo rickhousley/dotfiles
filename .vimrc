@@ -11,31 +11,67 @@ call vundle#begin()
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 
 Plugin 'chriskempson/base16-vim'
-Plugin 'tmhedberg/SimpylFold'
+"Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-scripts/indentpython.vim'
 Plugin 'ntpeters/vim-better-whitespace'
 Bundle 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
-Plugin 'nvie/vim-flake8'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'kien/ctrlp.vim'
-Plugin 'jmcantrell/vim-virtualenv'
+"Plugin 'jmcantrell/vim-virtualenv'
 Plugin 'majutsushi/tagbar'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'klen/python-mode'
+"Plugin 'davidhalter/jedi-vim'
+Plugin 'ervandew/supertab'
+Plugin 'sirver/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
+Plugin 'tomtom/tcomment_vim'
+"Plugin 'tmhedberg/matchit'
+Plugin 'jiangmiao/auto-pairs'
 
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+"
+" " better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+let g:pymode_rope = 0
+
+" Use <leader>l to toggle display of whitespace
+" nmap <leader>l :set list!<CR>
+" " automatically change window's cwd to file's dir
+set autochdir
+
+nnoremap <silent> <C-Right> <c-w>l
+nnoremap <silent> <C-Left> <c-w>h
+nnoremap <silent> <C-Up> <c-w>k
+nnoremap <silent> <C-Down> <c-w>j
+
+"
+" " I'm prefer spaces to tabs
+set tabstop=4
+set shiftwidth=4
+set expandtab
 
 " Enable folding
 set foldmethod=indent
@@ -44,7 +80,7 @@ let g:SimpylFold_docstring_preview=1
 
 " Theming
 let base16colorspace=256
-colorscheme base16-monokai
+colorscheme base16-chalk
 set background=dark
 
 
@@ -95,11 +131,6 @@ nnoremap <C-H> <C-W><C-H>
 
 "Tagbar
 nmap <F8> :TagbarToggle<CR>
-
-nnoremap <silent> <C-Right> <c-w>l
-nnoremap <silent> <C-Left> <c-w>h
-nnoremap <silent> <C-Up> <c-w>k
-nnoremap <silent> <C-Down> <c-w>j
 
 hi Normal ctermbg=none
 au VimEnter * RainbowParenthesesToggle
