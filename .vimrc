@@ -12,38 +12,40 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-
+" Plugin 'wikitopian/hardmode'
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 
 Plugin 'chriskempson/base16-vim'
 "Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-scripts/indentpython.vim'
-Plugin 'ntpeters/vim-better-whitespace'
+"Plugin 'ntpeters/vim-better-whitespace'
 Bundle 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'kien/ctrlp.vim'
 "Plugin 'jmcantrell/vim-virtualenv'
 Plugin 'majutsushi/tagbar'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'klen/python-mode'
-"Plugin 'davidhalter/jedi-vim'
+Plugin 'davidhalter/jedi-vim'
 Plugin 'ervandew/supertab'
 Plugin 'sirver/ultisnips'
-
 " Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
 Plugin 'tomtom/tcomment_vim'
 "Plugin 'tmhedberg/matchit'
 Plugin 'jiangmiao/auto-pairs'
-
+Plugin 'easymotion/vim-easymotion'
+Plugin 'junegunn/goyo.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+map <Leader> <Plug>(easymotion-prefix)
+
+
+" autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
 
 " make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -87,7 +89,7 @@ set background=dark
 set encoding=utf-8
 
 let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+" map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 syntax enable
 let python_highlight_all = 1
@@ -149,3 +151,30 @@ function! s:CombineSelection(line1, line2, cp)
 	  execute 'let char = "\u'.a:cp.'"'
 	    execute a:line1.','.a:line2.'s/\%V[^[:cntrl:]]/&'.char.'/ge'
     endfunction
+
+" Connect clipboards
+"set clipboard=unnamed
+map <C-c> "+y<CR>"
+set clipboard=unnamedplus
+
+let g:SuperTabCrMapping=1
+
+" Habit breaking time
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+
+
+"double tap i to escape
+imap ii <Esc>
+autocmd BufWritePre *.py :%s/\s\+$//e
+
+set undofile
+set undodir=~/.vimundo/
+set relativenumber
+set number
