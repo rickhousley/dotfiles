@@ -18,7 +18,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'chriskempson/base16-vim'
 "Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-scripts/indentpython.vim'
-"Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'ntpeters/vim-better-whitespace'
 Bundle 'Valloric/YouCompleteMe'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdtree'
@@ -37,7 +37,8 @@ Plugin 'jiangmiao/auto-pairs'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'junegunn/goyo.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
-
+Plugin 'tpope/vim-surround'
+Plugin 'Chiel92/vim-autoformat'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -173,8 +174,12 @@ imap <right> <nop>
 "double tap i to escape
 imap ii <Esc>
 autocmd BufWritePre *.py :%s/\s\+$//e
+autocmd BufWritePre *.cc :%s/\s\+$//e
 
 set undofile
 set undodir=~/.vimundo/
 set relativenumber
 set number
+
+autocmd BufRead,BufNewFile *.md setlocal spell
+
