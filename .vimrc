@@ -47,9 +47,6 @@ Plugin 'ctrlpvim/ctrlp.vim'
 " Surround shit with shit
 Plugin 'tpope/vim-surround'
 
-" Laziness
-" Plugin 'Chiel92/vim-autoformat'
-
 "Auto indent
 Plugin 'hynek/vim-python-pep8-indent'
 
@@ -61,16 +58,12 @@ Bundle 'djoshea/vim-autoread'
 
 Plugin 'jiangmiao/auto-pairs'
 
-
-" Better paste
-" http://stackoverflow.com/questions/5585129/pasting-code-into-terminal-window-into-vim-on-mac-os-x
-Plugin 'ConradIrwin/vim-bracketed-paste'
-
 " Flaking and pep8ing
 Plugin 'tell-k/vim-autoflake', {'for': 'python'}
 Plugin 'tell-k/vim-autopep8'
 Plugin 'benekastah/neomake'
 
+" Python sort imports (Isort at :)
 Plugin 'fisadev/vim-isort'
 
 " Enable fzf in vim
@@ -100,11 +93,8 @@ imap ii <Esc>
 
 "Sudo maps to W
 command W w !sudo tee % >/dev/null
-"stop annoying snap to top of block on yank 
-vmap <silent> y ygv<Esc>;:Clip<CR>  
 
 " ================ Theming ==================
-
 let base16colorspace=256
 colorscheme base16-chalk
 set background=dark
@@ -112,31 +102,7 @@ set background=dark
 " Python highlighting
 let python_highlight_all = 1
 
-" ================ Indentation ==============
-
-set autoindent
-set smartindent
-set smarttab
-set shiftwidth=2
-set softtabstop=2
-set tabstop=2
-set expandtab
-
-" Auto indent pasted text
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
-
-filetype plugin on
-filetype indent on
-
-"Display tabs and trailing spaces visually
-set list listchars=tab:\ \ ,trail:·
-
-" set nowrap       "Don't wrap lines
-set linebreak    "Wrap lines at convenient points
-
-
-" ================ Syntax stuff =============
+" ================ Indentation, Wrapping, Folding, syntax ==
 
 set encoding=utf-8
 syntax enable
@@ -149,50 +115,46 @@ set shiftwidth=2
 set textwidth=80
 set formatoptions-=t formatoptions+=croql
 
+" Auto indent pasted text
+nnoremap p p=`]<C-o>
+nnoremap P P=`]<C-o>
+
+filetype plugin on
+filetype indent on
+
+" set nowrap       "Don't wrap lines
+set linebreak    "Wrap lines at convenient points
+
 "  Enable folding
 set foldmethod=indent
 set foldlevel=99
 let g:SimpylFold_docstring_preview=1
 
-" Automatically change directory to working directory
-set autochdir
 
-" Highlight line cursor
-set cursorline
-
-set nu
-set relativenumber
-" Func for toggling or untoggling rel numbers
-function! NumberToggle()
-    if(&relativenumber == 1)
-        set number
-    else
-        set relativenumber
-    endif
-endfunc
-
-nnoremap <C-n> :call NumberToggle()<cr>
-
-
-let g:SuperTabCrMapping=1
-
+"Display tabs and trailing spaces visually
+set list listchars=tab:\ \ ,trail:·
+"Delete empty spaces for python and c++ files
 autocmd BufWritePre *.py :%s/\s\+$//e
 autocmd BufWritePre *.cc :%s/\s\+$//e
 
+" Set relative numbering
+set nu
+set relativenumber
+
+let g:SuperTabCrMapping=1
+
 " Spell check if a markdown file
 autocmd BufRead,BufNewFile *.md setlocal spell
-
-set backspace=indent,eol,start
 
 set clipboard=unnamedplus
 
 
 " ==================== Misc +++++++++++++++++++++++++++++
-filetype plugin indent on      " Filetype detection and custom file plugins + syntax
+" Automatically change directory to working directory
+set autochdir
 set hidden                     " Don't abandon buffers moved to the background
 set wildmenu                   " Enhanced completion hints in the command line
 set wildmode=list:longest,full " Complete longest common match and show possible and wildmenu
-set backspace=eol,start,indent " Allow backspacing over indent, eol, start
 set complete=.,w,b,u,U,t,i,d   " Scans for tab completion
 set diffopt=filler,iwhite      " Diff mode ignores whitespace and align unchanged lines
 set history=1000               " Remember 1000 commands
@@ -201,7 +163,7 @@ set visualbell t_vb=           " Disable visual bells
 set shortmess+=A               " Always edit file, even with swapfile
 set ttimeoutlen=50
 set lazyredraw
-set cursorline
+" set cursorline
 set autoread
 
 " Change directory to open file
@@ -228,7 +190,6 @@ set hlsearch
 set incsearch
 set showmatch
 
-
 " ==================== neomake settings
 set colorcolumn=100 
 let g:neomake_python_enabled_makers = ['pyflakes', 'pep8']
@@ -241,7 +202,7 @@ let g:neomake_error_sign = {
             \ } 
 hi NeoWarningMsg ctermbg=3 ctermfg=0 
 let g:neomake_warning_sign = { 
-            \ 'text': 'j❯', 
+            \ 'text': 'W❯', 
             \ 'texthl': 'NeoWarningMsg', 
             \ } 
 
@@ -249,6 +210,7 @@ let g:neomake_open_list = 0
 let g:neomake_list_height = 6 
 let g:neomake_python_flake8_maker ={ 'args': ['--max-line-length=105', '--ignore=F401'], } 
 
+let g:autopep8_disable_show_diff=1
 let g:autopep8_max_line_length=105 
 " let g:autopep8_aggressive=1 
 
@@ -266,19 +228,21 @@ endfunction
 
 nnoremap <silent> ]l :try<bar>lnext<bar>catch /^Vim\%((\a\+)\)\=:E\%(553\<bar>42\):/<bar>lfirst<bar>endtry<cr>
 nnoremap <silent> [l :try<bar>lnext<bar>catch /^Vim\%((\a\+)\)\=:E\%(553\<bar>42\):/<bar>lfirst<bar>endtry<cr>
-noremap <Leader>l :FzfLines<CR>
 
+""" FZF stuff
+noremap <Leader>l :FzfLines<CR>
 let g:fzf_command_prefix = 'Fzf' 
 let g:fzf_layout = { 'down': '40%' } 
 autocmd VimEnter * command! Colors 
       \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'}) 
 
-let g:autopep8_disable_show_diff=1
 
+" Syntax Completion stuff
 nnoremap <leader>d :YcmCompleter GoTo<CR>
 nnoremap <leader>k :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>r :YcmCompleter GoToReferences<CR>
 
+" Git stuff
 nnoremap <silent> <Leader>gd :Gdiff<CR>
 nnoremap <silent> <Leader>gb :Gblame<CR>
 
